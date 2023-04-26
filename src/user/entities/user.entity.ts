@@ -1,4 +1,7 @@
 export class User {
-    id: number;
-    isAdmin: boolean;
+    id?: number
+    name: string
+    email: string
+    password: string
+    role: string
 }

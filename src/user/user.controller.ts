@@ -12,17 +12,16 @@ export class UserController {
       ) {}
 
   @Post()
-  create(@Body() createUserDto: UserDto) {
-    const user = {id: 1, isAdmin: false}
-    const ability = this.abilityFactory.defineAbility(user)
+  create(@Body() dto: UserDto) {
 
+    const ability = this.abilityFactory.defineAbility(dto)
     const isAllowed = ability.can(Action.Create, User)
 
     if(!isAllowed){
       throw new ForbiddenException('only admin!!!')
     }
 
-    return this.userService.create(createUserDto);
+    return this.userService.create(dto);
   }
 
   @Get()

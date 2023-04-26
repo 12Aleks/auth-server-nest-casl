@@ -6,6 +6,7 @@ import {AbilityModule} from "../ability/ability.module";
 @Module({
   imports: [AbilityModule],
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}

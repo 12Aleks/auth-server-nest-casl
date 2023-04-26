@@ -20,9 +20,13 @@ export class AbilityFactory {
     defineAbility(user: User){
          const {can, cannot, build} = new AbilityBuilder(Ability)
 
-         if(user.isAdmin){
+         if(user.role === 'admin'){
              can(Action.Manage, 'all')
-         }else{
+         }else if(user.role === 'editor') {
+             can(Action.Read, 'all')
+             can(Action.Create, 'all')
+             can(Action.Update, 'all')
+         } else {
              can(Action.Read, 'all')
          }
 
