@@ -1,8 +1,9 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException, UseGuards} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import {AbilityFactory, Action} from "../ability/ability.factory";
-import {User} from "./entities/user.entity";
+import {AuthGuard} from "../auth/guards/auth.guard";
+
 
 @Controller('users')
 export class UserController {
@@ -11,15 +12,16 @@ export class UserController {
       private abilityFactory: AbilityFactory
       ) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() dto: UserDto) {
 
-    const ability = this.abilityFactory.defineAbility(dto)
-    const isAllowed = ability.can(Action.Create, User)
-
-    if(!isAllowed){
-      throw new ForbiddenException('only admin!!!')
-    }
+    // const ability = this.abilityFactory.defineAbility(dto)
+    // const isAllowed = ability.can(Action.Create, User)
+    //
+    // if(!isAllowed){
+    //   throw new ForbiddenException('only admin!!!')
+    // }
 
     return this.userService.create(dto);
   }
