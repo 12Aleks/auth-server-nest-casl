@@ -10,9 +10,10 @@ const DB_NAME = process.env.DB_NAME;
 
 @Module({
     imports: [
-        MongooseModule.forRoot(`mongodb+srv://${USER}:${PASSWORD}@cluster0.nrduk5t.mongodb.net/${DB_NAME}?retryWrites=true&w=majority"`),
+        MongooseModule.forRoot(`mongodb+srv://${USER}:${PASSWORD}@cluster0.nrduk5t.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`),
         UserModule,
         AbilityModule,
-        AuthModule]
+        AuthModule
+    ]
 })
 export class AppModule{}

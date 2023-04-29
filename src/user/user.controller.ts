@@ -1,8 +1,9 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException, UseGuards} from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
-import {AbilityFactory, Action} from "../ability/ability.factory";
-import {AuthGuard} from "../auth/guards/auth.guard";
+import {Body, Controller, Delete, Get, Param, Patch, Post} from '@nestjs/common';
+import {UserService} from './user.service';
+import {UserDto} from './dto/user.dto';
+import {AbilityFactory} from "../ability/ability.factory";
+import {Roles} from "../roles/roles.decorator";
+import {Role} from "../roles/role.enum";
 
 
 @Controller('users')
@@ -12,12 +13,11 @@ export class UserController {
       private abilityFactory: AbilityFactory
       ) {}
 
-  @UseGuards(AuthGuard)
   @Post()
   create(@Body() dto: UserDto) {
 
-    // const ability = this.abilityFactory.defineAbility(dto)
-    // const isAllowed = ability.can(Action.Create, User)
+    // const ability = this.abilityFactory.defineAbility()
+    // const isAllowed = ability.can(Action.Create, UserDto)
     //
     // if(!isAllowed){
     //   throw new ForbiddenException('only admin!!!')
@@ -26,6 +26,8 @@ export class UserController {
     return this.userService.create(dto);
   }
 
+
+  @Roles(Role.Admin)
   @Get()
   findAll() {
     return this.userService.findAll();

@@ -24,9 +24,8 @@ export class UserService {
      return user
   }
 
-  async findOneByEmail(email: string): Promise<User |  any>{
-    let result = await this.userModel.find({email})
-    return result
+  async findOneByEmail(email: string): Promise<User | undefined>{
+    return await this.userModel.findOne({email});
   }
 
   update(id: number, updateUserDto: UserDto) {

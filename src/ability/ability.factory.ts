@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
-import {User} from "../user/entities/user.entity";
-import {Ability, AbilityBuilder, ExtractSubjectType, InferSubjects} from "@casl/ability";
+import {Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects} from "@casl/ability";
+import {UserDto} from "../user/dto/user.dto";
 
 export enum Action {
     Manage = 'manage',
@@ -10,15 +10,15 @@ export enum Action {
     Delete = 'delete',
 }
 
-export type Subjects = InferSubjects<typeof User> | 'all'
+export type Subjects = InferSubjects<typeof UserDto> | 'all'
 
 export type AppAbility = Ability<[Action, Subjects]>
 
 
 @Injectable()
 export class AbilityFactory {
-    defineAbility(user: User){
-         const {can, cannot, build} = new AbilityBuilder(Ability)
+    defineAbility(user: UserDto){
+         const {can, cannot, build} = new AbilityBuilder(Ability as AbilityClass<AppAbility>)
 
          if(user.role === 'admin'){
              can(Action.Manage, 'all')
