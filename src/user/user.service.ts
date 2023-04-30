@@ -19,8 +19,8 @@ export class UserService {
     return users
   }
 
-  async findOne(id: number): Promise<User> {
-     let user = await this.userModel.findById(id)
+  async findOne(id: string): Promise<User> {
+     let user = await this.userModel.findById({_id: id})
      return user
   }
 

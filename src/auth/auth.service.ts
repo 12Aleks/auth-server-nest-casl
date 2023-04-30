@@ -1,9 +1,10 @@
-import {UnauthorizedException, Injectable} from '@nestjs/common';
+import {UnauthorizedException, Injectable, ForbiddenException} from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {signInDto} from "./dto/auth.dto";
 import { JwtService } from '@nestjs/jwt';
-import {generatePassword} from "../utils/bcrypt";
+import {generatePassword, comparePassword} from "../utils/bcrypt";
 import {UserDto} from "../user/dto/user.dto";
+import {User} from "../user/scheme/user.schema";
 
 
 @Injectable()
@@ -13,7 +14,17 @@ export class AuthService {
         private jwtService: JwtService
         ){}
     async login(dto: signInDto){
+        const user = await this.userServices.findOneByEmail(dto.email)
+        if (!user) throw new UnauthorizedException()
 
+        const comPassword = comparePassword(dto.password, user.password);
+        if(!comPassword) throw new ForbiddenException("The password was entered incorrectly")
+
+        const payload = {username: user.name, userRole: user.role, id: user._id };
+
+        return {
+            access_token: await this.jwtService.signAsync(payload)
+        }
 
     }
 

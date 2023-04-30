@@ -22,7 +22,9 @@ export class User{
         required: true,
         default: 'user'
     })
+
     role: string;
+    _id: any;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

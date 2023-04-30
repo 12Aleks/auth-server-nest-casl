@@ -17,17 +17,21 @@ export type AppAbility = Ability<[Action, Subjects]>
 
 @Injectable()
 export class AbilityFactory {
-    defineAbility(user: UserDto){
+    defineAbility(user){
+        console.log(user.id === '644d1db4913bcfc305d521c3')
          const {can, cannot, build} = new AbilityBuilder(Ability as AbilityClass<AppAbility>)
-
-         if(user.role === 'admin'){
+         if(user.userRole === 'admin'){
              can(Action.Manage, 'all')
-         }else if(user.role === 'editor') {
+         }else if(user.userRole === 'editor') {
              can(Action.Read, 'all')
              can(Action.Create, 'all')
              can(Action.Update, 'all')
-         } else {
-             can(Action.Read, 'all')
+         } else if (user.id === '644d1db4913bcfc305d521c3') {
+
+             cannot(Action.Read, UserDto).because("You do not have enough access privileges")
+         } else{
+             cannot(Action.Create, UserDto).because("You do not have enough access privileges")
+             can(Action.Read, UserDto)
          }
 
         return build({

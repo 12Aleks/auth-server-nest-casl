@@ -1,41 +1,40 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {UserService} from './user.service';
 import {UserDto} from './dto/user.dto';
-import {AbilityFactory} from "../ability/ability.factory";
 import {Roles} from "../roles/roles.decorator";
 import {Role} from "../roles/role.enum";
+import {RolesGuard} from "../roles/roles.guard";
+import {AuthGuard} from "../auth/auth.guard";
+import {CheckAbilities} from "../ability/abilities.decorator";
+import {Action} from "../ability/ability.factory";
 
 
 @Controller('users')
 export class UserController {
   constructor(
-      private readonly userService: UserService,
-      private abilityFactory: AbilityFactory
+      private readonly userService: UserService
       ) {}
 
   @Post()
   create(@Body() dto: UserDto) {
 
-    // const ability = this.abilityFactory.defineAbility()
-    // const isAllowed = ability.can(Action.Create, UserDto)
-    //
-    // if(!isAllowed){
-    //   throw new ForbiddenException('only admin!!!')
-    // }
-
     return this.userService.create(dto);
   }
 
-
-  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
+  @Roles(Role.User)
+  @CheckAbilities({action: Action.Read, subject: UserDto})
   findAll() {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
+  @Roles(Role.User)
+  @CheckAbilities({action: Action.Read, subject: UserDto})
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')

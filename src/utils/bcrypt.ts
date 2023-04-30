@@ -5,8 +5,6 @@ export const generatePassword = (rawPassword: string) => {
     return bcrypt.hashSync(rawPassword, SALT)
 }
 
-
-
-// export const comparePassword = (rawPassword: string, hash: string) => {
-//     return bcrypt.compareSync(rawPassword, hash)
-// }
+export const comparePassword = (rawPassword: string, hash: string) => {
+    return bcrypt.compareSync(rawPassword, hash)
+}
