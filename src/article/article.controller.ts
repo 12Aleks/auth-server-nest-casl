@@ -1,11 +1,11 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {ArticleService} from "./article.service";
 import {ArticleDto} from "./dto/article.dto";
 import {AuthGuard} from "../auth/auth.guard";
 import {AbilitiesGuards} from "../ability/abilities.guards";
 import {CheckAbilities} from "../ability/abilities.decorator";
 import {Action} from "../ability/ability.factory";
-import {UserDto} from "../user/dto/user.dto";
+import {ObjectId} from "mongoose";
 
 
 @Controller('articles')
@@ -23,6 +23,20 @@ export class ArticleController {
     @Get()
     getAll() {
         return this.articleService.getAll()
+    }
+
+    @Put(':id')
+    @UseGuards(AuthGuard, AbilitiesGuards)
+    @CheckAbilities({action: Action.Update, subject: ArticleDto})
+    update(@Param('id') id: ObjectId, @Body() dto: ArticleDto){
+        return this.articleService.update(id, dto)
+    }
+
+    @Delete(':id')
+    @UseGuards(AuthGuard, AbilitiesGuards)
+    @CheckAbilities({action: Action.Delete, subject: ArticleDto})
+    delete(@Param('id') id: ObjectId){
+        return this.articleService.delete(id)
     }
 
 }

@@ -20,7 +20,6 @@ export type AppAbility = Ability<[Action, Subjects]>
 @Injectable()
 export class AbilityFactory {
     defineAbility(user){
-
          const {can, cannot, build} = new AbilityBuilder(Ability as AbilityClass<AppAbility>)
          if(user.userRole === 'admin'){
              can(Action.Manage, 'all')
@@ -28,7 +27,12 @@ export class AbilityFactory {
              can(Action.Read, 'all')
              can(Action.Create, 'all')
              can(Action.Update, 'all')
+         }else if(user.userRole === 'user'){
+             can(Action.Create, ArticleDto)
+             cannot(Action.Update, ArticleDto).because('You do not have enough access privileges')
+             cannot(Action.Delete, ArticleDto).because("You do not have enough access privileges")
          }else{
+             can(Action.Read, 'all')
              cannot(Action.Read, UserDto).because("You do not have enough access privileges")
          }
 
