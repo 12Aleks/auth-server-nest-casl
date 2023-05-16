@@ -6,6 +6,7 @@ import {AbilitiesGuards} from "../ability/abilities.guards";
 import {CheckAbilities} from "../ability/abilities.decorator";
 import {Action} from "../ability/ability.factory";
 import {ObjectId} from "mongoose";
+import {CommentDto} from "./dto/comment.dto";
 
 
 @Controller('articles')
@@ -25,6 +26,8 @@ export class ArticleController {
         return this.articleService.getAll()
     }
 
+
+
     @Put(':id')
     @UseGuards(AuthGuard, AbilitiesGuards)
     @CheckAbilities({action: Action.Update, subject: ArticleDto})
@@ -38,5 +41,14 @@ export class ArticleController {
     delete(@Param('id') id: ObjectId){
         return this.articleService.delete(id)
     }
+
+
+
+    @Post('/comment')
+    addComment(@Body() dto: CommentDto){
+       return this.articleService.addComment(dto)
+    }
+
+
 
 }
