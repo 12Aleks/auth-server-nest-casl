@@ -27,7 +27,6 @@ export class ArticleController {
     }
 
 
-
     @Put(':id')
     @UseGuards(AuthGuard, AbilitiesGuards)
     @CheckAbilities({action: Action.Update, subject: ArticleDto})
@@ -44,11 +43,15 @@ export class ArticleController {
 
 
 
-    @Post('/comment')
+    @Post('comment')
     addComment(@Body() dto: CommentDto){
        return this.articleService.addComment(dto)
     }
 
 
+    @Get('comments')
+    getAllComment(){
+        return this.articleService.getAllComment()
+    }
 
 }

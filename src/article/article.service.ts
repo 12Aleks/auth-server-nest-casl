@@ -20,9 +20,10 @@ export class ArticleService {
     }
 
     async getAll(): Promise<IArticle[]> {
-        const articles = await this.articleModel.find();
+        const articles = await this.articleModel.find().populate('comments');
         return articles
     }
+
 
     async delete(id: ObjectId):Promise<IArticle[]>{
         await this.articleModel.findByIdAndDelete(id)
@@ -41,5 +42,9 @@ export class ArticleService {
       article.comments.push(comment.id)
       await article.save()
       return comment
+    }
+
+    async getAllComment(){
+        return await this.commentModel.find()
     }
 }
