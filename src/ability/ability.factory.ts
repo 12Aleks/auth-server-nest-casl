@@ -25,15 +25,22 @@ export class AbilityFactory {
              can(Action.Manage, 'all')
          }else if(user.userRole === 'editor') {
              can(Action.Read, 'all')
-             can(Action.Create, 'all')
-             can(Action.Update, 'all')
-         }else if(user.userRole === 'user'){
              can(Action.Create, ArticleDto)
-             cannot(Action.Update, ArticleDto).because('You do not have enough access privileges')
-             cannot(Action.Delete, ArticleDto).because("You do not have enough access privileges")
-         }else{
+             can(Action.Update, ArticleDto)
+             can(Action.Delete, ArticleDto)
+             cannot(Action.Manage, UserDto).because("You do not have enough access privileges")
+         }else if(user.userRole === 'user'){
              can(Action.Read, 'all')
-             cannot(Action.Read, UserDto).because("You do not have enough access privileges")
+             can(Action.Create, ArticleDto)
+             can(Action.Update, ArticleDto)
+             cannot(Action.Delete, 'all').because("You do not have enough access privileges")
+             cannot(Action.Manage, UserDto).because("You do not have enough access privileges")
+         }else{
+             can(Action.Read, ArticleDto)
+             cannot(Action.Manage, UserDto).because("You do not have enough access privileges")
+             cannot(Action.Create, 'all').because("You do not have enough access privileges")
+             cannot(Action.Update, 'all').because("You do not have enough access privileges")
+             cannot(Action.Delete, 'all').because("You do not have enough access privileges")
          }
 
          // else{

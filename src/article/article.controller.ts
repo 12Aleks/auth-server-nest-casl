@@ -15,8 +15,8 @@ export class ArticleController {
     }
 
     @Post()
-    // @UseGuards(AuthGuard, AbilitiesGuards)
-    // @CheckAbilities({action: Action.Create, subject: ArticleDto})
+    @UseGuards(AuthGuard, AbilitiesGuards)
+    @CheckAbilities({action: Action.Create, subject: ArticleDto})
     create(@Body() dto: ArticleDto) {
         return this.articleService.create(dto)
     }
@@ -28,20 +28,18 @@ export class ArticleController {
 
 
     @Put(':id')
-    // @UseGuards(AuthGuard, AbilitiesGuards)
-    // @CheckAbilities({action: Action.Update, subject: ArticleDto})
+    @UseGuards(AuthGuard, AbilitiesGuards)
+    @CheckAbilities({action: Action.Update, subject: ArticleDto})
     update(@Param('id') id: ObjectId, @Body() dto: ArticleDto){
         return this.articleService.update(id, dto)
     }
 
     @Delete(':id')
-    // @UseGuards(AuthGuard, AbilitiesGuards)
-    // @CheckAbilities({action: Action.Delete, subject: ArticleDto})
+    @UseGuards(AuthGuard, AbilitiesGuards)
+    @CheckAbilities({action: Action.Delete, subject: ArticleDto})
     delete(@Param('id') id: ObjectId){
         return this.articleService.delete(id)
     }
-
-
 
     @Post('comment')
     addComment(@Body() dto: CommentDto){
@@ -53,5 +51,4 @@ export class ArticleController {
     getAllComment(){
         return this.articleService.getAllComment()
     }
-
 }
