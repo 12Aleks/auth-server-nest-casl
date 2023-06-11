@@ -25,6 +25,10 @@ export class ArticleService {
     }
 
 
+    async findOne(id: ObjectId):Promise<Article>{
+        let article = await this.articleModel.findById({_id: id}).populate('comments');
+        return article
+    }
     async delete(id: ObjectId):Promise<IArticle[]>{
         const res = await this.articleModel.findByIdAndDelete(id).select('comments')
         await this.commentModel.deleteMany({ _id:  { $in : res.comments}})

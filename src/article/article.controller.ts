@@ -26,6 +26,11 @@ export class ArticleController {
         return this.articleService.getAll()
     }
 
+    @Get(':id')
+    getOne(@Param('id') id: ObjectId){
+        return this.articleService.findOne(id)
+    }
+
 
     @Put(':id')
     @UseGuards(AuthGuard, AbilitiesGuards)
