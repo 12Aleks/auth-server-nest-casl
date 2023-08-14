@@ -13,6 +13,9 @@ export class Article{
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]})
     comments: Comment[]
+
+    @Prop()
+    author: string
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article)

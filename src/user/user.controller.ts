@@ -19,7 +19,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  @CheckAbilities({action: Action.Read, subject: UserDto})
+  // @CheckAbilities({action: Action.Read, subject: UserDto})
   findAll() {
     return this.userService.findAll();
   }

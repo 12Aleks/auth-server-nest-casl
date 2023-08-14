@@ -4,6 +4,7 @@ import { AbilityModule } from './ability/ability.module';
 import {MongooseModule} from "@nestjs/mongoose";
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 const USER = process.env.DB_USER;
@@ -16,7 +17,8 @@ const DB_NAME = process.env.DB_NAME;
         UserModule,
         AbilityModule,
         AuthModule,
-        ArticleModule
+        ArticleModule,
+        ConfigModule.forRoot()
     ]
 })
 export class AppModule{}
